@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        #liste_joueur {
+            display: flex;
+            width: 100%;
+            flex-direction: row;
+            flex-shrink: 0;
+            flex-grow: 1;
+
+        }
+
+        button {
+            position: relative;
+            align-items: center;
+            height: 30px;
+            top: 250px;
+        }
+
+        /*A partir d'une certaine taille d'écran, permet d'afficher les éléments en colonnes grâce à flex direction column
+        On place les éléments les uns derrière les autres avec la position relative*/
+        @media screen and (max-width:500px) {
+            #liste_joueur {
+                display: flex;
+                flex-shrink: 0;
+                flex-grow: 1;
+                flex-direction: column;
+                align-self: center;
+                /*On laisse un peu d'espace pour que l'utlisation puisse scroller la page et non le select (mobile)*/
+                width: 90%;
+
+            }
+
+            button {
+                top: 0px;
+                height: 30px;
+                width: 100%;
+                margin: 0px;
+                position: relative;
+            }
+
+            #joueurs_tournoi {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+        }
+
+        .submit {
+            background-color: #070707;
+            border: none;
+            font-weight: bold;
+            color: white;
+            padding: 15px 32px;
+            text-align: right;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            position: relative;
+            align-items: center;
+            height: 50px;
+            top: 0px;
+        }
+
+        table,
+        td,
+        tr,
+        th {
+            height: auto;
+            /*Le tableau aura la largeur du div qui le contient*/
+            width: inherit;
+            padding: 8px;
+            border-collapse: collapse;
+            border: 1px solid black;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        /*A partir de 700px le tableau commence à ne plus s'afficher correctement, on va donc changer son affichage pour qu'ils'adapte aux écrans plus petits*/
+        @media screen and (max-width:700px) {
+
+            .table table,
+            .table head,
+            .table body,
+            .table tr,
+            .table th,
+            .table td {
+                padding: 0px;
+                /*On va donc afficher le tableau par bloc, une ligne sera représentée par un bloc*/
+                display: block;
+                /*Permet d'affecter la largeur de la table comme étant celle du son parent. Ainis la table prendre toute la place*/
+                width: inherit;
+                border-bottom: 1px solid black;
+            }
+
+            .table td {
+                position: relative;
+                /*Permet de ne pas avoir trop de lignes noires des cellules*/
+                margin-top: -1px;
+            }
+
+            .table tr {
+                margin-bottom: 1rem;
+            }
+
+            .table th+td {
+                padding-left: 10px;
+            }
+
+        }
+
+        #onglets ul li {
+            display: inline-block;
+            height: 24px;
+            min-width: 80px;
+            text-align: center;
+            line-height: 22px;
+            padding: 0 8px 0 8px;
+            margin: 1px 0px 0px 0px;
+            border: 1px solid gray;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
+            background: #F0F0F0;
+            width: auto;
+        }
+
+        .panel_onglet {
+            position: relative;
+            top: 0px;
+            left: 0;
+            margin: 0;
+            padding: 8px 0px 0 0px;
+            width: 100%;
+        }
+    </style>
+
+<body>
+    <div id="onglets">
+        <ul>
+            <li id="joueurs" onclick="vue_onglet(1,this)"><label for="joueurs">Joueurs</label></li>
+            <li id="tournoi" onclick="vue_onglet(2,this)"><label for="tournoi">Tournoi</label></li>
+            <li id="classement" onclick="vue_onglet(4,this)"><label for="classement">Classement</label></li>
+        </ul>
+    </div>
+    <div id="contenu_onglet">
+        <div id="onglet_joueur" class="panel_onglet" style="display: inline;">
+            <!--<table class="liste_joueur", id="liste_joueur" ></table>-->
+            <div id="liste_joueur">
+                <!--<select size="" multiple id="selection_joueur"></select>-->
+                <button onclick="joueur_vers_tournoi()">►</button>
+                <button onclick="tounoi_vers_joueur()">◄ </button>
+                <button onclick="creation_tournoi()">Création du
+                    tournoi </button>
+                <div id="tournoi_joueur"></div>
+            </div>
+
+        </div>
+        <div id="onglet_tournoi" class="panel_onglet" style="display: none;"></div>
+        <div id="onglet_classement" class="panel_onglet" style="display: none;"></div>
+    </div>
+
+</body>
+</head>
+<script>
+    // Sélectionner des participants parmis tous les joueur au jeu par utilisateur
+    function joueur_vers_tournoi() {
+
+        let joueur = document.getElementById("selection_joueur")
+        let joueur_tournoi = document.getElementById("joueurs_tournoi");
+        //Récupère le nombre de joueurs sélectionnés par le biais d'une liste
+        let selection_joueur = joueur.selectedOptions;
+        //Stocke ce nombre dans une constante sinon lors de la suppression des éléments
+        //la taille change et la boucle ne fonctionne pas correctement
+        const nbr_joueur = selection_joueur.length;
+
+        for (let index = 0; index < nbr_joueur; index++) {
+            joueur_tournoi.add(selection_joueur[0]);
+        }
+    }
+
+    // Faire retourner des participants à la boite des joueur
+    function tounoi_vers_joueur() {
+        let joueur = document.getElementById("selection_joueur")
+        let joueur_tournoi = document.getElementById("joueurs_tournoi");
+        //Récupère le nombre de joueurs sélectionnés par le biais d'une liste
+        let selection_joueur = joueur_tournoi.selectedOptions;
+        //Stocke ce nombre dans une constante sinon lors de la suppression des éléments
+        //la taille change et la boucle ne fonctionne pas correctement
+        const nbr_joueur = selection_joueur.length;
+
+        for (let index = 0; index < nbr_joueur; index++) {
+            joueur.add(selection_joueur[0]);
+        }
+    }
+
+    function traitement_nbr_equipe(nbr, modulo) {
+        // Cette fonction retourne le nombre d'équipe que l'on peut former en fonction du nombre de joueurs
+        //Par soucis de simplicité, on ne test que 4 tailles d'équipes
+        //On divise d'abord le nombre de joueur par deux pour être sûr d'avoir un nombre d'équipe pair.
+        let nbr_modulo = (nbr / 2) % modulo;
+        switch (nbr_modulo) {
+            case 0:
+
+                console.log("Nombre de joueurs : " + nbr + "\nEquipe de " + modulo + " joueur");
+                return nbr / modulo;
+                break;
+
+            default:
+                if (modulo != 5) {
+                    return traitement_nbr_equipe(nbr, modulo + 1);
+                }
+                else {
+                    // Cas par défaut, 2 joueurs par équipe
+                    console.log("Nombre de joueurs : " + nbr + "\nEquipe de 2");
+                    if (nbr % 2 != 0 && (nbr / 2) % 2 != 0) {
+                        nbr += 1;
+                    }
+                    else {
+                        return nbr / 2;
+                    } return Math.round(nbr / 2);
+                }
+                break;
+
+        }
+    }
+
+    function tri_tableaux_couleur_equipe(nbr_equipe, couleur) {
+        //On crée un nouveau tableau qui contiendra la nouvelle disposition des joueurs
+        //Cela permet de conserver le tableau initial
+
+        var tableaux_couleur = new Array();
+
+
+        tableaux_couleur[0] = couleur[0];
+        tableaux_couleur[3] = couleur[1];
+        if (nbr_equipe - 4 <= 0) {
+            tableaux_couleur[1] = couleur[nbr_equipe - 2];
+        } else {
+
+            tableaux_couleur[nbr_equipe - 4] = couleur[nbr_equipe - 2];
+            tableaux_couleur[1] = couleur[2];
+            for (let index = 3; index < nbr_equipe - 2; index += 2) {
+                tableaux_couleur[index + 2] = couleur[index];
+                tableaux_couleur[index - 1] = couleur[index + 1];
+            }
+        }
+        tableaux_couleur[nbr_equipe - 2] = couleur[nbr_equipe - 1];
+
+        return tableaux_couleur;
+    }
+
+    function tri_tableaux_parties_tournoi(nbr_equipe, tableaux) {
+        //On crée un nouveau tableau qui contiendra la nouvelle disposition des joueurs
+        //Cela permet de conserver le tableau initial
+        var tableaux_temp = new Array();
+
+        tableaux_temp[0] = tableaux[0];
+        tableaux_temp[3] = tableaux[1];
+        if (nbr_equipe - 4 <= 0) {
+            tableaux_temp[1] = tableaux[nbr_equipe - 2];
+        } else {
+            tableaux_temp[nbr_equipe - 4] = tableaux[nbr_equipe - 2];
+            tableaux_temp[1] = tableaux[2];
+            for (let index = 3; index < nbr_equipe - 2; index += 2) {
+                tableaux_temp[index + 2] = tableaux[index];
+                tableaux_temp[index - 1] = tableaux[index + 1];
+
+            }
+        }
+        tableaux_temp[nbr_equipe - 2] = tableaux[nbr_equipe - 1];
+        return tableaux_temp;
+    }
+
+    function creation_tournoi() {
+        let joueur = document.getElementById("selection_joueur")
+        let joueur_tournoi = document.getElementById("joueurs_tournoi");
+        const nbr_joueur = joueur_tournoi.length;
+        var txtXML = "<melee>\n<tournoi id=\"tournoi_" + nbr_joueur + "\">\n";
+        let i = 0;
+        var equipe = new Array();
+        var equipeTemp = new Array();
+        var nbr_equipe = traitement_nbr_equipe(nbr_joueur, 3);
+        //On crée deux tableaux équipe, l'un pour l'initialisation, l'autre pour permettre la rotation de l'affrontement des équipes
+        //Cette boucle crée les équipes
+        for (let index = 0; index < nbr_equipe; index++) {
+            equipe[index] = new Array();
+            equipeTemp[index] = new Array()
+        }
+
+        //Pour chaque équipe
+        for (let j = 0; j < nbr_equipe; j++) {
+            i = j;
+            //On les remplit des joueurs issus de la sélection
+            for (i; i < nbr_joueur; i = i + nbr_equipe) {
+                equipe[j].push(joueur_tournoi[i].id);
+                equipeTemp[j].push(joueur_tournoi[i].id);
+            }
+        }
+        if (nbr_joueur % 2 != 0) {
+            equipe[nbr_equipe - 1].push(-1);
+            equipeTemp[nbr_equipe - 1].push(-1);
+        }
+
+        //console.log(equipe);
+        localStorage.setItem('2', equipe);
+
+        //Cette boucle crée les n-1 balises parties, qui chacune représente un tour de jeu dans le tournoi
+        for (let index = 1; index < nbr_equipe; index++) {
+
+            //Pour la première balise on prend le tableau d'origine puis on modifiera les index du tableaux (donc les équipes) de
+            //façon à effectuer une rotation dans l'affrontement des équipes
+            if (index != 1) {
+                equipeTemp = tri_tableaux_parties_tournoi(nbr_equipe, equipeTemp);
+            }
+
+            txtXML += "<parties>";
+            var l = 0;
+            //Lors d'un seul tour, il y aura nbr_equipe/2 rencontres d'équipes dans chaque balise parties
+            for (let index = 0; index < nbr_equipe / 2; index++) {
+
+                equipeTemp[index + l].forEach(element => {
+                    txtXML += element + " ";
+                });
+                l += 1;
+                //Une fois tous les membres de l'équipe écrit, on ajoute le caractère qui sépare les équipes
+                txtXML += "x";
+                //Puis on écrit l'équipe à laquelle elle sera confrontée
+                equipeTemp[index + l].forEach(element => {
+                    txtXML += " " + element;
+                });
+
+                txtXML += "<br/>\n ";
+            }
+        }
+        txtXML += "</parties>";
+        txtXML += "</tournoi>\n</melee>";
+
+        //console.log(txtXML);
+        save_tournoi(txtXML);
+    }
+
+    function save_tournoi(txtXML) {
+        try {
+            localStorage.setItem(0, txtXML);
+        } catch (e) {
+            alert("Erreur lors de la sauvegarde du fichier tournoi");
+        }
+    }
+    /* 
+    Afficher tous les tournois générés aléatoirement dans l'onglet "Tournoi"
+    */
+    function affiche_tournoi() {
+        //On récupère ce que qui est dans le locale storage, en l'occurence les informations du tournoi sous XML
+        try {
+            let couleur = ["red", "pink", "orange", "yellow", "violet", "green", "deepskyblue", "peru", "grey", "cyan", "gold", "hotpink", "blueviolet", "white"];
+            let parser = new DOMParser();
+
+            let xml_joueurText = localStorage.getItem('1');
+            let xml = parser.parseFromString(xml_joueurText, "application/xml");
+            var xmlJoueur = xml.getElementsByTagName("joueur");
+
+            let xmlString = localStorage.getItem('0');
+            let htmlString = "<table class=\"table\"><thead><tr><th colspan=\"10\" style=\"text-align: center; font: bold; width: auto; heigth: auto;\">Rencontre</th></tr></thead><tbody>";
+            //On convertit la chaine de caractère en document XML
+
+            const xmlTournoi = parser.parseFromString(xmlString, "application/xml");
+            //console.log(docXml);
+
+            //On va ensuite afficher dans l'onglet tournoi, un tableau à partir du fichier xml
+            id_tournoi = xmlTournoi.getElementsByTagName("tournoi");
+            partie = xmlTournoi.getElementsByTagName("parties");
+            let tableaux_couleur = tri_tableaux_couleur_equipe(partie.length + 1, couleur)
+            for (let index = 0; index < partie.length; index++) {
+                let num_tour = index + 1;
+                let i = 0;
+                let j = 0;
+                let num_equipe = 0;
+
+                if (index != 0) {
+                    //Le tableau des couleurs est agencé de la même manière que celui des équipes (rotation)
+                    tableaux_couleur = tri_tableaux_parties_tournoi(partie.length + 1, tableaux_couleur);
+                }
+
+                htmlString += "<tr><td colspan=\"10\" style=\"text-align: center; font: bold;\">Tour numéro " + num_tour + "</td>";
+                //Convertit la liste des noeuds (childNodes) en tableau exploitable pour forEach
+                Array.from(partie[index].childNodes).forEach(element => {
+                    //Ce test permet d'enlever les <br/> utilisées uniquement pour la lisibilité dans le doc xml
+                    if (i % 2 == 0) {
+                        htmlString += "<tr style=\"text-align: center;\">";
+                        //Dans chaque noeud de l'xml tournoi, on vient lire les affrontements d'équipes qui s'y trouvent 
+                        //On remplace aussi les ID des joueurs formant les équipes par leur nom et prénom   
+                        element.nodeValue.split(" ").forEach(elem => {
+                            if (elem != "x" && elem != "" && elem != '\n') {
+                                if (elem == "-1") {
+                                    htmlString += "<td bgcolor=" + tableaux_couleur[num_equipe] + ">" + "\n</td>";
+                                } else {
+                                    htmlString += "<td bgcolor=" + tableaux_couleur[num_equipe] + ">" + xmlJoueur[elem].getElementsByTagName("nom")[0].childNodes[0].nodeValue + " " + xmlJoueur[elem].getElementsByTagName("prenom")[0].childNodes[0].nodeValue + "\n</td>";
+                                }
+                            } else if (elem == "x") {
+                                num_equipe += 1;
+
+                            }
+                            else {
+                                num_equipe += 1;
+                                j += 1;
+                            }
+                        });
+                        htmlString += "</tr>"
+                    }
+                    i += 1;
+                });
+            }
+            htmlString += "</tbody></table>";
+            htmlString += "<br>" + "<td><td>" +
+                "<button class= 'submit' type='button' name='button' onclick='traitement_score()'>Soumettez les scores</button>" +
+                "</td></tr>";
+            document.getElementById('onglet_tournoi').innerHTML = htmlString;
+
+        } catch (error) {
+            console.log(error);
+            alert("Erreur lors du chargement des fichiers dans le stockage local");
+        }
+        // Ajouter d'une nouvelle colonne pour saisir les scores
+        [...document.querySelectorAll('.table tr')].forEach((row, i) => {
+            if (row.cells.length > 1) {
+                for (let j = 0; j < 2; j++) {
+                    const input = document.createElement("input")
+                    input.setAttribute('type', 'number')
+                    if (j == 0) {
+                        input.setAttribute('placeholder', 'score equipe n° 1')
+                    }
+                    else {
+                        input.setAttribute('placeholder', 'score equipe n° 2')
+                    }
+                    const cell = document.createElement(i ? "td" : "th")
+                    cell.appendChild(input)
+                    row.appendChild(cell)
+                }
+            }
+        });
+    }
+
+    /*Une fonctionne qui nous permet de saisir toutes les scores et les trier
+    */
+    function traitement_score() {
+        var txt = "";
+        var parties, partie;
+        var match;
+        var equipe;
+        var input;
+        var joueur;
+        var netScore;
+        // Créer un tableau 2D en utilisant le tableau 1D. 
+        // Une dimension pour sauvegarder le id de chaque participant et l'autre pour son score
+        var participants = []
+
+        //document.querySelectorAll('input').forEach(input => {
+        //    txt += input.value;
+        //});
+        // L'interface qui permet d'analyser le code source XML ou HTML d'une chaîne de caractères dans un DOM.
+        var parser = new DOMParser();
+        var xmlString = localStorage.getItem('0');
+        //On convertit la chaine de caractère en document XML
+        const xmlTournoi = parser.parseFromString(xmlString, "application/xml");
+        var id_tournoi = xmlTournoi.getElementsByTagName("tournoi");
+        parties = xmlTournoi.getElementsByTagName("parties");
+        // Récupérer toutes les élément "input"
+        var inputs = document.getElementsByTagName("input");
+
+        //var k = 0;
+        // Boucle à travers de tous les tournois
+        for (let i = 0; i < id_tournoi.length; i++) {
+
+            // Boucle à travers de toutes les parties dans chaque tournoi
+            for (let j = 0; j < parties.length; j++) {
+                //Récupérer chaque partie
+                //Boucle sur l'ensemble des matchs
+                for (let index = 0; index < parties[j].childNodes.length; index++) {
+                    //Permet d'éviter de traiter les noeuds qui ne contiennent pas de texte
+                    if (index % 2 == 0) {
+                        partie = parties[j].childNodes[index].nodeValue;
+                        // Récupérer chaque match
+                        txt += partie + "<br>";
+                        matchs = partie.split("\n");
+                        for (let k = 0; k < matchs.length; k++) {
+                            // Récupérer chaque equipe de chaque partie composant 2 equipes
+                            equipe = matchs[k].split("x");
+                            txt += matchs[k] + "<br>";
+                            //netScore = inputs[2 * j].value - inputs[2 * j + 1].value;
+
+                            joueur = equipe[0].split(" ");
+                            for (let l = 0; l < joueur.length; l++) {
+                                txt += joueur[l] + "<br>";
+                            }
+                        }
+                    }
+                }
+
+                /* for (let j = 0; j < joueur.length; j++) {
+                    if (!participants.include(joueur[j])) {
+                        participants.push([joueur[j], net]);
+                        k++;
+                    }
+                    else {
+                        participant[k][1] = participant[k][1] + net;
+                    }
+                } */
+                /* var joueur = equipe[1].split(" ");
+                for (let j = 0; j < joueur.length; j++) {
+                    txt += joueur[j].value + "<br>";
+                } */
+                /* for (let j = 0; j < joueur.length; j++) {
+                    if (!participants.include(joueur[j])) {
+                        participants.push([joueur[j], net]);
+                        k++;
+                    }
+                    else {
+                        participant[k][1] = participant[k][1] - net;
+                    }
+                }*/
+
+            }
+        }
+        txt += "la longeur de tournois: " + id_tournoi.length + "<br>";
+        txt += "la longeur de parties: " + parties.length + "<br>";
+        txt += "la longeur de matchs: " + matchs.length + "<br>";
+        /* for (var i = 0; i < participants.length; i++) {
+            for (var j = 0; j < 2; j++) {
+                //txt += participant[i][j] + "<br";
+            }
+        } */
+        document.getElementById("onglet_classement").innerHTML = txt;
+    }
+
+    function init_onglet() {
+        let onglet = document.getElementById("onglet");
+        let li_onglet = document.querySelector("li");
+
+        //L'onglet sélectionné aura une bordure blanche de manière à ce qu'il soit bien identifié
+        li_onglet.style.borderBottom = "1px solid white";
+        li_onglet.style.background = "white";
+    }
+
+    function vue_onglet(n, litag) {
+        //Par défaut le contenue n'est pas affiché (display : none)
+        let joueur = "none";
+        let tournoi = "none";
+        let score = "none";
+        let classement = "none";
+
+        //Celui qui est sélectionné pour l'afficher aura display : inline 
+        switch (n) {
+            case 1:
+                joueur = "inline";
+                break;
+            case 2:
+                tournoi = "inline";
+                affiche_tournoi();
+                break;
+            case 4:
+                classement = "inline";
+                break;
+            default:
+                alert("Erreur lors de la sélection des onglets");
+        }
+        //On modifie les styles de façon à ce qu'ils soient correctement affichés
+        document.getElementById("onglet_joueur").style.display = joueur;
+        document.getElementById("onglet_tournoi").style.display = tournoi;
+        document.getElementById("onglet_classement").style.display = classement;
+
+        //Modifie les styles des elements de la liste li (les onglets) pour avoir la bonne présentation
+        var tabs = document.getElementById("onglets");
+        var ca = Array.prototype.slice.call(tabs.querySelectorAll("li"));
+        ca.map(function (elem) {
+            elem.style.background = "#F0F0F0";
+            elem.style.borderBottom = "1px solid gray"
+        });
+        //L'onglet sélectionné aura une bordure blanche de manière à ce qu'il soit bien identifié  
+        litag.style.borderBottom = "1px solid white";
+        litag.style.background = "white";
+    }
+
+
+    function lecture_joueur() {
+        var xhttp = new XMLHttpRequest();
+
+        xhttp.onreadystatechange = function () {
+            if (xhttp.readyState == 4) {
+                traitement_joueur(xhttp);
+                try {
+                    localStorage.setItem(1, xhttp.responseText);
+                } catch (error) {
+                    alert("Erreur lors de la sauvegarde du fichier des joueurs")
+                }
+            }
+        };
+        xhttp.open("GET", "joueurs.xml", true);
+        xhttp.send();
+
+    }
+
+    function traitement_joueur(xml) {
+        //Création de la liste des choix des joueurs
+        let xmlDoc = xml.responseXML;
+        var x = xmlDoc.getElementsByTagName("joueur");
+        let nbr_joueur = x.length;
+        let table = "<select size=" + nbr_joueur / 1.5 + " multiple id=\"selection_joueur\">";
+        let table_tournoi = "<select size=" + nbr_joueur / 1.5 + " multiple id=\"joueurs_tournoi\"></select>";
+        for (let i = 0; i < nbr_joueur; i++) {
+            let nom = x[i].getElementsByTagName("nom")[0].childNodes[0].nodeValue;
+            let prenom = x[i].getElementsByTagName("prenom")[0].childNodes[0].nodeValue;
+            table += "<option value=\"" + nom + " " + prenom + "\" id=" + i + "" + ">" + nom + " " + prenom + "</option>";
+        }
+        table += "</select> "
+        document.getElementById("liste_joueur").innerHTML = table + document.getElementById("liste_joueur").innerHTML;
+        document.getElementById("tournoi_joueur").innerHTML = table_tournoi;
+    }
+
+    window.onload = function chargement() {
+        lecture_joueur();
+        init_onglet();
+    }
+</script>
+
+</html>

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<joueurs>
+	<joueur id="1">
+		<nom>Cox</nom>
+		<prenom>Ezekiel</prenom>
+	</joueur>
+	<joueur id="2">
+		<nom>Joyce</nom>
+		<prenom>Jennifer</prenom>
+	</joueur>
+	<joueur id="3">
+		<nom>Kemp</nom>
+		<prenom>Galvin</prenom>
+	</joueur>
+	<joueur id="4">
+		<nom>Stanley</nom>
+		<prenom>Pascale</prenom>
+	</joueur>
+	<joueur id="5">
+		<nom>Justice</nom>
+		<prenom>Sylvia</prenom>
+	</joueur>
+	<joueur id="6">
+		<nom>Valencia</nom>
+		<prenom>Alden</prenom>
+	</joueur>
+	<joueur id="7">
+		<nom>Delgado</nom>
+		<prenom>Hayfa</prenom>
+	</joueur>
+	<joueur id="8">
+		<nom>Silva</nom>
+		<prenom>Cole</prenom>
+	</joueur>
+	<joueur id="9">
+		<nom>Duran</nom>
+		<prenom>Riley</prenom>
+	</joueur>
+	<joueur id="10">
+		<nom>Salinas</nom>
+		<prenom>Celeste</prenom>
+	</joueur>
+	<joueur id="11">
+		<nom>Hinton</nom>
+		<prenom>Ora</prenom>
+	</joueur>
+	<joueur id="12">
+		<nom>Green</nom>
+		<prenom>Chelsea</prenom>
+	</joueur>
+	<joueur id="13">
+		<nom>Atkins</nom>
+		<prenom>Bernard</prenom>
+	</joueur>
+	<joueur id="14">
+		<nom>Cooke</nom>
+		<prenom>Dante</prenom>
+	</joueur>
+	<joueur id="15">
+		<nom>Tran</nom>
+		<prenom>Knox</prenom>
+	</joueur>
+	<joueur id="16">
+		<nom>Newton</nom>
+		<prenom>Lance</prenom>
+	</joueur>
+	<joueur id="17">
+		<nom>Rios</nom>
+		<prenom>Francis</prenom>
+	</joueur>
+	<joueur id="18">
+		<nom>Lindsay</nom>
+		<prenom>Kerry</prenom>
+	</joueur>
+	<joueur id="19">
+		<nom>Flynn</nom>
+		<prenom>Ian</prenom>
+	</joueur>
+	<joueur id="20">
+		<nom>Murphy</nom>
+		<prenom>Gillian</prenom>
+	</joueur>
+	<joueur id="21">
+		<nom>Gibbs</nom>
+		<prenom>Gareth</prenom>
+	</joueur>
+	<joueur id="22">
+		<nom>Short</nom>
+		<prenom>Angela</prenom>
+	</joueur>
+	<joueur id="23">
+		<nom>Estes</nom>
+		<prenom>Shellie</prenom>
+	</joueur>
+	<joueur id="24">
+		<nom>Clayton</nom>
+		<prenom>Rooney</prenom>
+	</joueur>
+	<joueur id="25">
+		<nom>Holland</nom>
+		<prenom>Xenos</prenom>
+	</joueur>
+	<joueur id="26">
+		<nom>Koch</nom>
+		<prenom>Inga</prenom>
+	</joueur>
+	<joueur id="27">
+		<nom>Livingston</nom>
+		<prenom>Helen</prenom>
+	</joueur>
+	<joueur id="28">
+		<nom>Russo</nom>
+		<prenom>Griffith</prenom>
+	</joueur>
+	<joueur id="29">
+		<nom>Crawford</nom>
+		<prenom>Kelly</prenom>
+	</joueur>
+	<joueur id="30">
+		<nom>Walls</nom>
+		<prenom>Charles</prenom>
+	</joueur>
+	<joueur id="31">
+		<nom>Stark</nom>
+		<prenom>Hamish</prenom>
+	</joueur>
+	<joueur id="32">
+		<nom>Robinson</nom>
+		<prenom>Jason</prenom>
+	</joueur>
+	<joueur id="33">
+		<nom>Albert</nom>
+		<prenom>Brenden</prenom>
+	</joueur>
+	<joueur id="34">
+		<nom>Kaufman</nom>
+		<prenom>Priscilla</prenom>
+	</joueur>
+	<joueur id="35">
+		<nom>May</nom>
+		<prenom>Cooper</prenom>
+	</joueur>
+	<joueur id="36">
+		<nom>Blackburn</nom>
+		<prenom>Ruth</prenom>
+	</joueur>
+	<joueur id="37">
+		<nom>Willis</nom>
+		<prenom>Mallory</prenom>
+	</joueur>
+	<joueur id="38">
+		<nom>Norris</nom>
+		<prenom>Fuller</prenom>
+	</joueur>
+	<joueur id="39">
+		<nom>Burns</nom>
+		<prenom>Madeson</prenom>
+	</joueur>
+	<joueur id="40">
+		<nom>Garza</nom>
+		<prenom>Robert</prenom>
+	</joueur>
+	<joueur id="41">
+		<nom>Marshall</nom>
+		<prenom>Aquila</prenom>
+	</joueur>
+	<joueur id="42">
+		<nom>Arnold</nom>
+		<prenom>John</prenom>
+	</joueur>
+	<joueur id="43">
+		<nom>Hughes</nom>
+		<prenom>Paki</prenom>
+	</joueur>
+	<joueur id="44">
+		<nom>Palmer</nom>
+		<prenom>Charissa</prenom>
+	</joueur>
+	<joueur id="45">
+		<nom>Welch</nom>
+		<prenom>Gay</prenom>
+	</joueur>
+	<joueur id="46">
+		<nom>Pherson</nom>
+		<prenom>Buck</prenom>
+	</joueur>
+	<joueur id="47">
+		<nom>Nguyen</nom>
+		<prenom>Kaye</prenom>
+	</joueur>
+	<joueur id="48">
+		<nom>Leblanc</nom>
+		<prenom>Courtney</prenom>
+	</joueur>
+	<joueur id="49">
+		<nom>Ballard</nom>
+		<prenom>Nash</prenom>
+	</joueur>
+	<joueur id="50">
+		<nom>Gibson</nom>
+		<prenom>Yoko</prenom>
+	</joueur>
+</joueurs>
